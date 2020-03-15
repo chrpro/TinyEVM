@@ -23,10 +23,10 @@ Existing approaches also do not capture the logic and process of IoT, where appl
 In this paper, we present TinyEVM, a novel system to generate and execute off-chain smart contracts based on sensor data.
 TinyEVM's goal is to enable IoT devices to perform micropayments and, at the same time, address the IoT constraints.
 We investigate the trade-offs to execute smart contracts in low-power IoT devices.
-We test our system with 7,000 publicly verified smart contracts, where TinyEVM achieves to deploy 93\% of them without any modification.
+We test our system with 7,000 publicly verified smart contracts, where TinyEVM achieves to deploy 93 % of them without any modification.
 Finally, we evaluate the execution of off-chain smart contracts in terms of run-time performance, energy, and memory requirements on IoT devices.
-Notably, we find that low-power devices can deploy a smart contract in 215~ms on average.
-The mote can complete an off-chain payment in 584~ms on average.
+Notably, we find that low-power devices can deploy a smart contract in 215 ms on average.
+The mote can complete an off-chain payment in 584 ms on average.
 
 
 # Source code will be unlocked latest 7th of July 2020 
