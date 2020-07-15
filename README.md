@@ -33,7 +33,7 @@ Under [contiki-ng/Ethereum-vm-256](./contiki-ng/Ethereum-vm-256/).
 
 
 
-### Execute Smart Contracts Example
+### Example of Executint Smart Contract Bytecode
 
 Under [contiki-ng/Ethereum-vm-256/Ethereum_App.c](./contiki-ng/Ethereum-vm-256/Ethereum_App.c).
 
