@@ -1,0 +1,17 @@
+CONTENTS
+
+This library contains functions and structures that can help
+constructing a single-threaded UDP server with DTLS support in
+C99. The following components are available:
+
+* dtls
+  Basic support for DTLS with pre-shared key mode.
+
+* tests
+  The subdirectory tests contains test programs that show how each
+  component is used.
+
+BUILDING
+
+When using the code from the git repository, invoke make to build DTLS as a
+shared library.

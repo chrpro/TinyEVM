@@ -1,0 +1,13 @@
+# -*- makefile -*-
+
+ifndef CONTIKI_NG
+  ${error CONTIKI_NG not defined! You must specify where Contiki-NG resides}
+endif
+
+ifneq ($(MAKECMDGOALS),clean)
+ ifeq (${wildcard $(CONTIKI_NG)/Makefile.include},)
+  ${info Contiki-NG not found. Cloning latest version.}
+
+  NG := ${shell git clone --single-branch --recursive https://github.com/contiki-ng/contiki-ng.git $(CONTIKI_NG)}
+ endif
+endif

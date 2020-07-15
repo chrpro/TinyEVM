@@ -1,0 +1,26 @@
+{
+    "files.associations": {
+        "evm.h": "c",
+        "optional": "c",
+        "system_error": "c",
+        "uint256.h": "c",
+        "functional": "c",
+        "array": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "istream": "c",
+        "ostream": "c",
+        "ratio": "c",
+        "tuple": "c",
+        "complex": "c",
+        "string": "c",
+        "string_view": "c",
+        "keccak256.h": "c",
+        "iterator": "c",
+        "vector": "c",
+        "__locale": "c",
+        "ios": "c",
+        "__string": "c"
+    },
+    "git.ignoreLimitWarning": true
+}
