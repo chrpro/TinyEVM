@@ -29,13 +29,13 @@ We support Texas Instruments CC2538 SoC.
 ## Code structure
 
 ### EVM code
-Under [ContikiNG/Ethereum-vm-256](./ContikiNG/Ethereum-vm-256/).
+Under [contiki-ng/Ethereum-vm-256](./contiki-ng/Ethereum-vm-256/).
 
 
 
 ### Execute Smart Contracts Example
 
-Under [ContikiNG/Ethereum-vm-256/Ethereum_App.c](./ContikiNG/Ethereum-vm-256/Ethereum_App.c).
+Under [contiki-ng/Ethereum-vm-256/Ethereum_App.c](./contiki-ng/Ethereum-vm-256/Ethereum_App.c).
 
 ### Configuring, Compiling, Flashing and Running on HW
 
