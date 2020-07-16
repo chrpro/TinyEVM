@@ -26,7 +26,6 @@ The mote can complete an off-chain payment in 584 ms on average.
 
 We implement the Etheruem Virtual Machine (EVM), in <b>C</b> for the <b>Contiki-NG OS</b>.
 
-We support Texas Instruments CC2538 SoC.
 
 ## Code structure
 
@@ -72,5 +71,5 @@ make clean && make
 
 To program the connected mote:
 ```
-make -j4 TARGET=openmote-cc2538 PORT=/dev/[DEVICE PORT] Ethereum_App.upload
+make -j4 TARGET=[DEVICE] PORT=/dev/[DEVICE PORT] Ethereum_App.upload
 ```
