@@ -1,5 +1,5 @@
 
-Source code of the TinyEVM System (to be published) at <b>40th IEEE - ICDCS 2020</b> conference.
+Source code of the TinyEVM System (accepted for publication) at <b>40th IEEE - ICDCS 2020</b> conference.
 
 # TinyEVM: Off-Chain Smart Contracts on Low-Power IoT Devices
 <b>Chistos Profentzas</b>, Magnus Almgren, and Olaf Landsiedel. In Proceedings of the 40th IEEE International Conference on Distributed Computing Systems (ICDCS), 2020.
