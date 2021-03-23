@@ -2,7 +2,7 @@
 # TinyEVM: Off-Chain Smart Contracts on Low-Power IoT Devices
 <b>Chistos Profentzas</b>, Magnus Almgren, and Olaf Landsiedel. In Proceedings of the 40th IEEE International Conference on Distributed Computing Systems (ICDCS), 2020.
 
-[Paper PDF](https://research.chalmers.se/publication/516951/file/516951_Fulltext.pdf), 
+[Paper PDF](https://research.chalmers.se/en/publication/516951), 
 
 [talk] ICDCS - December 2020
 
