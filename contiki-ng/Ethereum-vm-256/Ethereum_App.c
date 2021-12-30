@@ -4,18 +4,13 @@
 #include "keccak256.h"
 #include "bytecode.h"
 
-
-
 //REV reversve the byte order
 #define REV(X) ((X << 24) | ((X & 0xff00) << 8) | ((X >> 8) & 0xff00) | (X >> 24))
 
 #define DEPLOY_LENGTH 3000
 
-
 uint8_t deployed_contract[DEPLOY_LENGTH];
 uint64_t DeployLength = 0;
-
-
 static rtimer_clock_t total_time;
 
 /*---------------------------------------------------------------------------*/
