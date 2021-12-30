@@ -69,14 +69,16 @@ void execute_contract(Machine *machine_state, const uint8_t *s_contract, uint32_
     while(machine_state->PC  < size - 1 )
     {
         // GAS can be emmited for off-chain
-        if(machine_state->GAS_Charge > GAS_LIMIT){
+        if(machine_state->GAS_Charge > GAS_LIMIT)
+	{
              printf("Run out of GAS!\n");
              break;
         }
         //decode the next instruction
         int status = decode_instruction(machine_state, s_contract[machine_state->PC] , s_contract );
         //check for stack pointer
-        if (machine_state->SP > max_sp){
+        if (machine_state->SP > max_sp)
+	{
             max_sp = machine_state->SP; 
         }
         if (status == RETURN)
@@ -90,7 +92,8 @@ void execute_contract(Machine *machine_state, const uint8_t *s_contract, uint32_
             break;
         }
         machine_state->PC ++;
-        if(s_contract[machine_state->PC] == STOP){
+        if(s_contract[machine_state->PC] == STOP)
+	{
             break;
         }
     }
@@ -103,17 +106,20 @@ void execute_contract(Machine *machine_state, const uint8_t *s_contract, uint32_
 }
 //each word-machine parse through the decode state
 int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int8_t *s_contract) { 
-	switch (op_code_exc ) {
+    switch (op_code_exc )
+    {
         //****<< IOT APP OPCODES >>****
-        case SENSOR:{
+        case SENSOR: {
+		
             printf("sensor\n");
             break;
 
         }
-        case TEMPERATURE :{
+		    
+        case TEMPERATURE: {
     
-            // read and sgtore temperature sensor
-            #ifdef CC2538_CHIP
+            	// read and store temperature sensor
+            	#ifdef CC2538_CHIP
                 #define TMP_BUF_SZ 32
                 char tmp_buf[TMP_BUF_SZ];
                 SENSORS_ACTIVATE(cc2538_temp_sensor);
@@ -124,31 +130,38 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
                 uint256_t temperature;
                 LOWER(LOWER(temperature)) = cc2538_temp_sensor.value(CC2538_SENSORS_VALUE_TYPE_CONVERTED);
                 stack_push(machine_state, temperature);
-            #endif
-        break;
+            	#endif
+		break;
         }
 
-        case LED :{
+        case LED: {
+		
             // printf ("LED sensor\n");
             leds_on(LEDS_YELLOW);
-            break;             
+            break; 
+		
         }
 
         //****<< ORIGINAL OPCODES >>****
-		case STOP: { // STOP
-			printf("STOP..\n");
+	case STOP: { 
+		
+	    printf("STOP..\n");
             // printf("Stack output:  %llu \n", stack_peek(machine_state));
             printf("GAS spend:  %lu \n", machine_state->GAS_Charge);
-			shutdown_machine(machine_state);
-		} 
-		case PUSH1:
+	    shutdown_machine(machine_state);
+	    break;
+		
+	} 
+		    
+	case PUSH1:
         case PUSH2:
         case PUSH3:
         case PUSH4:
         case PUSH5:
         case PUSH6:
         case PUSH7:
-        case PUSH8:{ // Push x bits into the stack 
+        case PUSH8: { // Push x bits into the stack 
+		
             // printf( "PC:%li - PUSH \n",machine_state->PC); 
             if (op_code_exc < 0) {	
                     printf( "malformed op_code: {PUSH}\n");
@@ -185,8 +198,10 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             UPPER(UPPER(machine_state->STACK[machine_state->SP])) = element_upp_upp;
 
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas2;
-			break;
-		} 
+	    break;
+		
+	} 
+		    
         case PUSH9:
         case PUSH10:
         case PUSH11:
@@ -194,8 +209,8 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
         case PUSH13:
         case PUSH14:
         case PUSH15:
-        case PUSH16:
-        { 
+        case PUSH16: { 
+		
             if (op_code_exc < 0) {	
                     printf( "malformed op_code: {PUSH}\n");
                     break;
@@ -236,8 +251,10 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             UPPER(LOWER(machine_state->STACK[machine_state->SP])) = element_upp_low;
             UPPER(UPPER(machine_state->STACK[machine_state->SP])) = element_upp_upp;
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas2;
-			break;
-		} 
+	    break;
+		
+	}
+		    
         case PUSH17:
         case PUSH18:
         case PUSH19:
@@ -245,8 +262,8 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
         case PUSH21:
         case PUSH22:
         case PUSH23:
-        case PUSH24:        
-        { 
+        case PUSH24: {
+		
             if (op_code_exc < 0) {	
                     printf( "malformed op_code: {PUSH}\n");
                     break;
@@ -298,9 +315,9 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             UPPER(UPPER(machine_state->STACK[machine_state->SP])) = element_upp_upp;
 
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas2;
-;
-			break;
-		} 
+	    break;
+		
+	} 
         case PUSH25:
         case PUSH26:
         case PUSH27:
@@ -308,8 +325,8 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
         case PUSH29:
         case PUSH30:
         case PUSH31:
-        case PUSH32:        
-        { 
+        case PUSH32: {
+		
             if (op_code_exc < 0) {	
                     printf( "malformed op_code: {PUSH}\n");
                     break;
@@ -365,10 +382,12 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             UPPER(UPPER(machine_state->STACK[machine_state->SP])) = element_upp_upp;
 
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas2;
-
-			break;
-		} 
-		case ADD: { // Add top two values of the stack 
+	    break;
+		
+	}
+		    
+	case ADD: { // Add top two values of the stack 
+		
             uint256_t target = {0};
             uint256_t number_1 = stack_pop(machine_state);
             uint256_t number_2 = stack_pop(machine_state);
@@ -376,19 +395,24 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             add256( &number_1, &number_2, &target);
             stack_push(machine_state, target);
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
-			break;
-		} 
-		case MUL: { // Multiply top two values of the stack
-            uint256_t target = {0};
+	    break;
+	} 
+		
+	case MUL: { // Multiply top two values of the stack
+        
+	    uint256_t target = {0};
             uint256_t number_1 = stack_pop(machine_state);
             uint256_t number_2 = stack_pop(machine_state);
 
             mul256( &number_1, &number_2, &target);        
             stack_push(machine_state,target);
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas5;
-            break;
-        } 
-		case SUB: { // Subtract top two values of the stack
+	    break;
+		
+        }
+		    
+	case SUB: { // Subtract top two values of the stack
+		
             uint256_t target = {0};
             uint256_t number_1 = stack_pop(machine_state);
             uint256_t number_2 = stack_pop(machine_state);
@@ -397,7 +421,9 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             stack_push(machine_state, target);
             break;
         }
-		case DIV: { // Divide (unsign) top two values of the stack 
+	    
+	case DIV: { // Divide (unsign) top two values of the stack 
+		
             uint256_t target = {0};                      
             uint256_t number_1 = stack_pop(machine_state);
             uint256_t number_2 = stack_pop(machine_state);
@@ -408,11 +434,13 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
                 divmod256( &number_1, &number_2, &target, NULL);            
             }
             stack_push(machine_state, target);
-            break;
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas5;
             break;
+		
         }
-		case SDIV: { // SDIV top two values of the stack
+
+	case SDIV: { // SDIV top two values of the stack
+		
             uint256_t target = {0};
             uint256_t modulo = {0};                      
             uint256_t number_1 = stack_pop(machine_state);
@@ -420,11 +448,13 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
 
             divmod256( &number_1, &number_2, &target, &modulo);            
             stack_push(machine_state, target);
-            break;
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas5;
             break;
+		
         }
-		case MOD: { // Modulo using top two of the stack
+
+	case MOD: { // Modulo using top two of the stack
+		
             uint256_t target = {0};
             uint256_t modulo = {0};                      
             uint256_t number_1 = stack_pop(machine_state);
@@ -432,11 +462,13 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
 
             divmod256( &number_1, &number_2, &target, &modulo);            
             stack_push(machine_state, modulo);
-            break;
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas5;
             break;
+		
         } 
-		case SMOD: { // SMOD
+	
+	case SMOD: { // SMOD
+		
             uint256_t target = {0};
             uint256_t modulo = {0};                      
             uint256_t number_1 = stack_pop(machine_state);
@@ -444,11 +476,13 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
 
             divmod256( &number_1, &number_2, &target, &modulo);            
             stack_push(machine_state, modulo);
-            break;
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas5;
             break;
+		
         } 
-		case ADDMOD: {	//Add two values and modulo N (take the three values from strack)	
+	
+	case ADDMOD: {	//Add two values and modulo N (take the three values from strack)	
+		
             uint256_t  div = {0};
             uint256_t  modulo = {0}; 
             uint256_t  sum = {0};                     
@@ -459,11 +493,13 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             add256( &number_1, &number_2, &sum);
             divmod256( &sum, &modulo_N, &div, &modulo);         
             stack_push(machine_state, modulo);
-            break;
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas5;
             break;
+		
         } 
-		case MULMOD: { //Multiply two values and modulo N (take the three values from strack)
+
+	case MULMOD: { //Multiply two values and modulo N (take the three values from strack)
+		
             uint256_t number_1 = stack_pop(machine_state);
             uint256_t number_2 = stack_pop(machine_state);
             uint256_t modulo_N = stack_pop(machine_state);
@@ -476,11 +512,13 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             stack_push(machine_state,  modulo );
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas8;
             break;
+		
         }
-		case EXP: { // Exponentiation modulo top two values of the stack
+	
+	case EXP: { // Exponentiation modulo top two values of the stack
 
             // very inefficient way to implement this
-        	uint256_t base = stack_pop(machine_state);
+            uint256_t base = stack_pop(machine_state);
             uint64_t exponent = LOWER(LOWER( stack_pop(machine_state)));
             uint256_t accumulator={0};
             uint256_t result ={0};
@@ -497,15 +535,19 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             stack_push(machine_state, result);
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas10;
             break;
-        } 
-        case SIGNEXTEND: { // Sign and extends using top two ...
+		
+        }
+		    
+        case SIGNEXTEND: { // Sign and extends using top two 
+		
             printf("SIGNEXTEND not supported\n");
-
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas5;
             break;
+		
         } 
 
-		case LT: { // Less Than comparison top two ...
+	case LT: { // Less Than comparison top two 
+		
             uint256_t  top = stack_pop(machine_state);
             uint256_t  bot = stack_pop(machine_state);
             uint256_t zeroORone = {0};
@@ -520,40 +562,11 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             }
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
             break;
-        } 
-		case GT: { // Greater than comparion top two ...
-            uint256_t  top = stack_pop(machine_state);
-            uint256_t  bot = stack_pop(machine_state);
-            uint256_t zeroORone = {0};
-
-            bool top_greater = gt256(&top, &bot);
-			if (top_greater){
-                LOWER(LOWER(zeroORone)) = 0x01;
-				stack_push(machine_state, zeroORone);
-            }
-			else{
-				stack_push(machine_state, zeroORone);
-            }
-            machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
-            break;
-        } 
-		case SLT: { // Less Than comparison treat values by 2 compliment (note: in C values are 2complement by default)
-            uint256_t  top = stack_pop(machine_state);
-            uint256_t  bot = stack_pop(machine_state);
-            uint256_t zeroORone = {0};
-
-            bool bot_greater = gt256(&bot, &top);
-			if (bot_greater){
-                LOWER(LOWER(zeroORone)) = 0x01;
-				stack_push(machine_state, zeroORone);
-            }
-			else{
-				stack_push(machine_state, zeroORone);
-            }
-            machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
-            break;
+		
         }
-		case SGT: { //Greater Than comparison treat values by 2 compliment (note: in C values are 2complement by default)
+		    
+	case GT: { // Greater than comparion top two 
+		
             uint256_t  top = stack_pop(machine_state);
             uint256_t  bot = stack_pop(machine_state);
             uint256_t zeroORone = {0};
@@ -568,12 +581,51 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             }
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
             break;
-		} 
-		case EQ: { // Equal comparison 
+		
+        } 
+		    
+	case SLT: { // Less Than comparison treat values by 2 compliment (note: in C values are 2complement by default)
+		
             uint256_t  top = stack_pop(machine_state);
             uint256_t  bot = stack_pop(machine_state);
             uint256_t zeroORone = {0};
 
+            bool bot_greater = gt256(&bot, &top);
+			if (bot_greater){
+                LOWER(LOWER(zeroORone)) = 0x01;
+				stack_push(machine_state, zeroORone);
+            }
+			else{
+				stack_push(machine_state, zeroORone);
+            }
+            machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
+            break;
+		
+        }
+		    
+	case SGT: { //Greater Than comparison treat values by 2 compliment (note: in C values are 2complement by default)
+		
+            uint256_t  top = stack_pop(machine_state);
+            uint256_t  bot = stack_pop(machine_state);
+            uint256_t zeroORone = {0};
+            bool top_greater = gt256(&top, &bot);
+			if (top_greater){
+                LOWER(LOWER(zeroORone)) = 0x01;
+				stack_push(machine_state, zeroORone);
+            }
+			else{
+				stack_push(machine_state, zeroORone);
+            }
+            machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
+            break;
+		
+	}
+		    
+	case EQ: { // Equal comparison 
+		
+            uint256_t  top = stack_pop(machine_state);
+            uint256_t  bot = stack_pop(machine_state);
+            uint256_t zeroORone = {0};
             bool TopBotEquals = equal256(&top, &bot);
 			if (TopBotEquals){
                 LOWER(LOWER(zeroORone)) = 0x01;
@@ -584,23 +636,28 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             }
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
             break;
-		} 
-		case ISZERO: { // Test if top is zero
+		
+	} 
+	
+	case ISZERO: { // Test if top is zero
+		
             uint256_t  top = stack_pop(machine_state);
             uint256_t zeroORone = {0};
-
             bool TopZero = zero256(&top);
-			if (TopZero){
+	    if (TopZero){
                 LOWER(LOWER(zeroORone)) = 0x01;
 				stack_push(machine_state, zeroORone);
             }
-			else{
-				stack_push(machine_state, zeroORone);
+	    else{
+		stack_push(machine_state, zeroORone);
             }
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
             break;
-		} 
-		case AND: { // AND on top two values
+		
+	}
+		    
+	case AND: { // AND on top two values
+		
             uint256_t top = stack_pop(machine_state);
             uint256_t bot = stack_pop(machine_state);
             uint256_t andRes = {0};
@@ -608,9 +665,12 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
 
             stack_push(machine_state, andRes);
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
-            break;	
-		} 
-		case OR: { // OR on top two values
+            break;
+		
+	}
+		    
+	case OR: { // OR on top two values
+		
             uint256_t top = stack_pop(machine_state);
             uint256_t bot = stack_pop(machine_state);
             uint256_t orRes = {0};
@@ -619,30 +679,35 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             stack_push(machine_state, orRes);
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
             break;		
-		} 
-		case XOR: { // XOR on top two values
+		
+	} 
+		    
+	case XOR: { // XOR on top two values
+		
             uint256_t top = stack_pop(machine_state);
             uint256_t bot = stack_pop(machine_state);
             uint256_t xorRes = {0};
             xor256(&top,&bot,&xorRes);
-
-
-			stack_push(machine_state, xorRes);
+	    stack_push(machine_state, xorRes);
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
             break;	
-		} 
-		case NOT: { // NOT on top value 
+		
+	} 
+
+	case NOT: { // NOT on top value 
+		
             uint256_t top = stack_pop(machine_state);
             not256(&top);
 			stack_push(machine_state, top);
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
             break;	
-		} 
-		case BYTE: { // BYTE on top two values
+		
+	}
+		    
+	case BYTE: { // BYTE on top two values
+		
             uint256_t i = stack_pop(machine_state);
             uint256_t x = stack_pop(machine_state);
-
-            
             uint32_t shift_value = (uint32_t) LOWER(LOWER(i));
             shift_value = 248 - shift_value * 8 ;
             uint256_t target = {0};
@@ -652,53 +717,52 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             uint256_t y = {0};
             and256(&target,&tmp0ff,&y);
             stack_push(machine_state,y);
-            
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
             break;	
-		}
+		
+	}
+		    
         case SHL: { //shift left
+		
             uint256_t shift = stack_pop(machine_state);
             uint256_t value = stack_pop(machine_state);
             uint32_t shift_v = (uint32_t) LOWER(LOWER(shift));
             uint256_t target = {0};
             shiftl256(&value,shift_v, &target);
- 
-            stack_push(machine_state,target);
-            
+            stack_push(machine_state,target); 
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
-            break;	
-		}
+            break;
+		
+	}
+		    
         case SHR: { // shift right
+		
             uint256_t shift = stack_pop(machine_state);
             uint256_t value = stack_pop(machine_state);
-
-            
             uint32_t shift_v = (uint32_t) LOWER(LOWER(shift));
-
             uint256_t target = {0};
             shiftr256(&value,shift_v, &target);
- 
             stack_push(machine_state,target);
-            
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
             break;	
-		}
+		
+	}
+		    
         case SAR: { // shift int right
-            uint256_t shift = stack_pop(machine_state);
+
+	    uint256_t shift = stack_pop(machine_state);
             uint256_t value = stack_pop(machine_state);
-
-            
             uint32_t shift_v = (uint32_t) LOWER(LOWER(shift));
-
             uint256_t target = {0};
             shiftr256(&value,shift_v, &target);
- 
             stack_push(machine_state,target);
-            
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
-            break;	
-		}
+            break;
+		
+	}
+		    
         case SHA3:{
+		
             uint256_t Offset_256 = stack_pop(machine_state);
             uint256_t Length_256 = stack_pop(machine_state);
 
@@ -735,11 +799,11 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             int i = 0;
             for(i = 0; i <8; i++)
             {
-                 element_upp_upp  = ( element_upp_upp  << 8 ) | (uint64_t) result[i];
+                element_upp_upp  = ( element_upp_upp  << 8 ) | (uint64_t) result[i];
             }
             for(i = 8; i < 16; i++)
             {
-                 element_upp_low  = ( element_upp_low  << 8 ) | (uint64_t) result[i];
+                element_upp_low  = ( element_upp_low  << 8 ) | (uint64_t) result[i];
             }
             for(i = 16; i < 24; i++)
             {
@@ -757,31 +821,35 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             UPPER(UPPER(hashTOpush)) = element_upp_upp;
             
             stack_push(machine_state, hashTOpush);
-
             break;
+		
         }
 
-        case ADDRESS:
-        {
+        case ADDRESS: {
             stack_push(machine_state,  machine_state->message.address);            
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas2;
-		    break;
+	    break;
+		
         }
-        case CALLER:{
+		    
+        case CALLER: {
 
             stack_push(machine_state,  machine_state->message.caller);
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas2;
- 
-		    break;
+	    break;
+		
         }
-        case CALLVALUE:{
+		    
+        case CALLVALUE: {
 
             stack_push(machine_state,  machine_state->message.call_value);
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas2;
- 
-		    break;
+ 	    break;
+		
         }
-        case CALLDATALOAD:{
+		    
+        case CALLDATALOAD: {
+		
             // printf("CALLDATALOAD: CAREFULL WITH SIZE AND BYTE ORDER\n");
             // uint256_t index = stack_pop(machine_state);
             uint32_t offset = LOWER(LOWER(stack_pop(machine_state)));
@@ -813,23 +881,23 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             break;
 
         }
-        case CALLDATASIZE:
-        {
+		    
+        case CALLDATASIZE: {
+		
             // printf("CALLDATASIZE: data size is limited \n");
             uint256_t sizeofdata = {0};
             LOWER(LOWER(sizeofdata)) = machine_state->message.datasize ; 
-
             stack_push(machine_state,sizeofdata);
-		    break;
+            break;
+
         }
-        case CALLDATACOPY:
-        {
-            // printf("CALLDATACOPY: CARE ABOUT MEM SIZE AND BYTEORDER \n");
+
+        case CALLDATACOPY: {
             
+            // printf("CALLDATACOPY: CARE ABOUT MEM SIZE AND BYTEORDER \n");
             uint64_t destOffset = LOWER(LOWER(stack_pop(machine_state)));
             uint64_t offset = LOWER(LOWER(stack_pop(machine_state)));
             uint64_t length = LOWER(LOWER(stack_pop(machine_state)));
-
             // printf("CALLDATACOPY: length(%llu)+ offdet(%llu) \n",length,destOffset);
             if( (destOffset + length) < 0 || (destOffset + length) > MEMORY_SPACE ){
                printf("CALLDATACOPY: length(%llu)+ offdet(%llu) out of memory bound\n",length,destOffset);
@@ -844,11 +912,12 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
                 }
             }
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas2;
-
-		    break;
+            break;
+                
         }
         
-        case RETURN:{
+        case RETURN: {
+                
             // printf("RETURN !\n");
             uint64_t offset = LOWER(LOWER (  stack_pop(machine_state)));
             uint64_t length = LOWER(LOWER (  stack_pop(machine_state)));
@@ -864,21 +933,20 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             memcpy(&deployed_contract, &return_value , sizeof( uint8_t ) * length);
             return RETURN;
             break;
+                
         }
 
-        case BALANCE:
-        {
-            //  printf("BALANCE: BALANCE of contract not available on local exc...\n");
-		    break;
+        case BALANCE: {
+            //printf("BALANCE: BALANCE of contract not available on local exc...\n");
+            break;
         }
+                    
         case CODECOPY:{
+                
             uint64_t MEMOffset = LOWER(LOWER (stack_pop(machine_state)));
             uint64_t Offset = LOWER(LOWER (stack_pop(machine_state)));
             uint64_t length =  LOWER(LOWER (stack_pop(machine_state)));
-
-
             // printf("CODECOPY:  MEMOffset 0x%llX ,Offset 0x%llX , length 0x%llu  \n", MEMOffset,Offset,length);
-
             if( (MEMOffset ) < 0 || (MEMOffset) > MEMORY_SPACE ){
                printf("CODECOPY: length(%llu)+ offdet(%llXF) out of memory bound\n",length,MEMOffset);
             }
@@ -931,26 +999,29 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             }
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas2;
             break;
+                
         }
+                    
         case CODESIZE:{
             uint256_t code_sz = {0};
             LOWER(LOWER (code_sz) ) = machine_state -> message.codesize;
             stack_push(machine_state, code_sz);   
-
             break;
+                
         }
 
-        case POP: //POP the first element and discard it
-        {
+        case POP: { //POP the first element and discard it
+        
             // printf("[DEBUG]POP Opcode: discard the first element from the stack\n");
             stack_pop(machine_state);
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas2;
             break;
+                
         }
 
 
-        case MLOAD:
-        {
+        case MLOAD: {
+                
             uint64_t offset = LOWER(LOWER ( stack_pop(machine_state)));
             // printf("MLOAD 0x%llX\n", offset);
             if (offset < 0 ||  offset > MEMORY_SPACE)
@@ -965,19 +1036,18 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             }
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
             break;
+                
         }
 
-		case MSTORE: { // Store at the memory using as offest and word top two values of the stack 
-			// printf("MSTORE opcode\n");
+        case MSTORE: { // Store at the memory using as offest and word top two values of the stack 
+            // printf("MSTORE opcode\n");
             uint64_t offset = LOWER(LOWER (  stack_pop(machine_state)));
-			uint256_t word = stack_pop(machine_state);
+            uint256_t word = stack_pop(machine_state);
            
             if (offset < 0 ||  offset > MEMORY_SPACE){
                 printf("MEM Offeset: 0x%llX is invalid\n" , offset);
             }
-            else{
-                
-                
+            else {
                 memcpy(&machine_state->MEM[offset], &word,  sizeof( word ));  
                 if (sizeof( word ) > max_mem_offset){
                     max_mem_offset = offset + sizeof( word ); 
@@ -986,8 +1056,11 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
 
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
             break;	
-		}
+                
+        }
+                    
         case MSTORE8: {
+                
              uint64_t offset = LOWER(LOWER (  stack_pop(machine_state)));
              uint8_t word =(uint8_t)  LOWER(LOWER (  stack_pop(machine_state)));
             if (offset < 0 ||  offset > MEMORY_SPACE)
@@ -1001,8 +1074,11 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
 
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
             break;
+                
         }
-        case SSTORE:{
+                    
+        case SSTORE: {
+                
             uint64_t key = LOWER(LOWER ( stack_pop(machine_state)) );
             uint256_t value = stack_pop(machine_state);
             // printf("STORAGE key: 0x%llX \n" , key);
@@ -1024,8 +1100,11 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
 
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.sstoreSetGas;
             break;
+                
         }
-        case SLOAD:{
+                    
+        case SLOAD: {
+                
             uint64_t key = LOWER(LOWER ( stack_pop(machine_state) ) ) ;
             // printf("SLOAD key: 0x%llX\n" , key);
             // print256(&machine_state->STORAGE[0]);
@@ -1043,8 +1122,11 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
                 stack_push(machine_state, value);
             }
             break;
+                
         }
+                    
         case JUMPI: {
+                
             // printf("JUMPI:\n");
             // printf("Currnet PC:  %lu\n",machine_state->PC  );
             uint64_t destination = LOWER(LOWER ( stack_pop(machine_state)) );
@@ -1053,12 +1135,18 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
 
             // printf("Jump PC:  %lu\n",machine_state->PC  );
             break;
+                
         }
+                    
         case JUMPDEST:{
+                
             //  printf("JUMP label Nothing to do...\n");
              break;
+                
         }
-        case JUMP:{
+                    
+        case JUMP: {
+                
             uint64_t destination = LOWER(LOWER ( stack_pop(machine_state) ) );
             // printf("jump (%llu) destination\n", destination);
             if (destination < 0 ){
@@ -1068,6 +1156,7 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
                 machine_state->PC = destination ;
             }
             break;
+                
         }
 
         case  DUP1:	
@@ -1085,8 +1174,7 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
         case  DUP13:
         case  DUP14:
         case  DUP15:
-        case  DUP16:
-        {
+        case  DUP16: {
             
             uint64_t offset = (uint64_t)op_code_exc - (uint64_t)DUP1 ;
             // printf("DUP: to clone value at:%llu \n",offset);
@@ -1101,6 +1189,7 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
                 stack_push(machine_state, to_clone);
             }
             break;
+                
         }
         
         case SWAP1:
@@ -1118,7 +1207,8 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
         case SWAP13:
         case SWAP14:
         case SWAP15:
-        case SWAP16:{
+        case SWAP16: {
+                
             int SwapOffest = machine_state->SP - ( (uint64_t)op_code_exc - (uint64_t)SWAP1 + 1 );
 
             // printf("[DEBUG] SWAP with offset(%d)\n",SwapOffest);
@@ -1141,14 +1231,15 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
         case LOG1:
         case LOG2:
         case LOG3:
-        case LOG4:
-        {
+        case LOG4: {
+                
             printf("LOG unsupported \n");
             break;
+                
         }
 
-        case TIMESTAMP:
-        {
+        case TIMESTAMP: {
+                
             uint256_t timestamp = {0};
             time = RTIMER_NOW();
             LOWER(LOWER(timestamp) ) = time;
@@ -1157,8 +1248,9 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             printf("Unused opcode\n");
             break;
         }
-        case REVERT:
-        {
+                    
+        case REVERT: {
+                
             uint64_t offset = LOWER(LOWER ( stack_pop(machine_state)));
             uint64_t length = LOWER(LOWER ( stack_pop(machine_state)));
 
@@ -1176,22 +1268,30 @@ int decode_instruction(Machine *machine_state, u_int8_t op_code_exc, const u_int
             machine_state->GAS_Charge = machine_state->GAS_Charge  + GAS_TABLE.stepGas3;
             break;
         }
-        case BLOCKHASH :{
+                    
+        case BLOCKHASH: {
+                
             uint256_t block = {0};
             stack_push(machine_state, block);
             break;
+                
         }
-        case INVALID:
-        {
+                    
+        case INVALID: {
+                
             printf("Unused opcode\n");
             break;
+                
         }
-		default: {
-			printf("Unsupported OP_CODE: %X\n",op_code_exc);
+
+        default: {
+                
+            printf("Unsupported OP_CODE: %X\n",op_code_exc);
             return -1;
-			break;
-		}
+            break;
 	}
+                    
+    }
     return 0;
 }
 
