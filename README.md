@@ -4,12 +4,9 @@
 
 [Paper PDF](https://research.chalmers.se/en/publication/516951), 
 
-[talk] ICDCS - December 2020
-
-
-
 ## Abstract
-In this paper, we present TinyEVM, a novel system to generate and execute off-chain smart contracts based on sensor data.
+
+TinyEVM is a novel system to generate and execute off-chain smart contracts based on sensor data.
 TinyEVM's goal is to enable IoT devices to perform micropayments and, at the same time, address the IoT constraints.
 We investigate the trade-offs to execute smart contracts in low-power IoT devices.
 We test our system with 7,000 publicly verified smart contracts, where TinyEVM achieves to deploy 93 % of them without any modification.
@@ -17,20 +14,15 @@ Finally, we evaluate the execution of off-chain smart contracts in terms of run-
 Notably, we find that low-power devices can deploy a smart contract in 215 ms on average.
 IoT devices can complete an off-chain payment in 584 ms on average.
 
-
-
-
 ## Implementation
 
 We implement the Etheruem Virtual Machine (EVM), in <b>C</b> for the <b>Contiki-NG OS</b>.
 
-
 ## Code structure
 
 ### EVM code
+
 Under [contiki-ng/Ethereum-vm-256](./contiki-ng/Ethereum-vm-256/).
-
-
 
 ### Example of Executing Smart Contract Bytecode
 
@@ -39,6 +31,7 @@ Under [contiki-ng/Ethereum-vm-256/Ethereum_App.c](./contiki-ng/Ethereum-vm-256/E
 ### Configuring, Compiling, Flashing and Running on HW
 
 #### Toolchain: Compiler
+
 To compile, you need to install the GCC compiler toolchain and tell the Makefile where to find it.
 
 <!-- We use [gcc-arm-none-eabi-7-2017-q4-major](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads) -->
