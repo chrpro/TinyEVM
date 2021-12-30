@@ -24,22 +24,21 @@ AUTOSTART_PROCESSES(&hello_world_process);
 /*---------------------------------------------------------------------------*/
 PROCESS_THREAD(hello_world_process, ev, data)
 {
-  PROCESS_BEGIN();
-	
-	static Machine MAIN_VM; 
-	init_machine(&MAIN_VM);
+	PROCESS_BEGIN();
+    static Machine MAIN_VM; 
+    init_machine(&MAIN_VM);
 
-	unsigned char funcation_name[] = "close(uint256,bytes)";
+    unsigned char funcation_name[] = "close(uint256,bytes)";
 
     // -1 to remove \0 of the string termination
     uint8_t keccak_fun_name[32];
-	get_keccak256(funcation_name, sizeof(funcation_name) - 1, keccak_fun_name);
+    get_keccak256(funcation_name, sizeof(funcation_name) - 1, keccak_fun_name);
 
-	// uint8_t call_value[396] = {0};
+    // uint8_t call_value[396] = {0};
     uint64_t parameter1 = 0x01;
     uint64_t sizeOfparameter1 = 0x40;
-    uint64_t sizeOfsignature = 0x14;
-    uint8_t signature[32]  = {0xca,0x35,0xb7,0xd9,0x15,0x45,0x8e,0xf5,0x40,0xad,0xe6,0x06,0x8d,0xfe,0x2f,0x44,0xe8,0xfa,0x73,0x3c,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,};
+	uint64_t sizeOfsignature = 0x14;
+	uint8_t signature[32]  = {0xca,0x35,0xb7,0xd9,0x15,0x45,0x8e,0xf5,0x40,0xad,0xe6,0x06,0x8d,0xfe,0x2f,0x44,0xe8,0xfa,0x73,0x3c,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,};
 	
 	
 	memcpy(MAIN_VM.message.data, keccak_fun_name, sizeof(uint8_t) * 4 );
