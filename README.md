@@ -4,6 +4,8 @@
 
 [Paper PDF](https://research.chalmers.se/en/publication/516951)
 
+![IoTLogBlock](./ContikiNG/ParkingAPP.pdf)
+
 ## Abstract
 
 TinyEVM is a novel system to generate and execute off-chain smart contracts based on sensor data.
