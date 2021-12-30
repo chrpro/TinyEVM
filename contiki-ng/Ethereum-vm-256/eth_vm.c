@@ -53,8 +53,8 @@ static rtimer_clock_t time;
 
 
 void init_machine(Machine * state) {
-	state->PC = 0;
-	state->SP = 0;
+    state->PC = 0;
+    state->SP = 0;
     state->GAS_Charge = 0;
 }
 
