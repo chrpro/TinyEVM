@@ -4,7 +4,7 @@
 
 [Paper PDF](https://research.chalmers.se/en/publication/516951)
 
-![IoTLogBlock](./contiki-ng/ParkingAPP.pdf)
+![Application Example](./contiki-ng/ParkingAPP.png)
 
 ## Abstract
 
